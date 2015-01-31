@@ -1,36 +1,32 @@
-# Mighty 1284P: Platform files for Arduino to run on ATmega1284P
+### FirePick Delta Bootloaders for Arduino IDE
 
-## What is it?
+#### Summary / Context
 
-Everything you need to run Arduino on ATmega1284P.
+This is a mashup of:
 
-## Current state
+* mega1284duino: https://github.com/cano64/mega1284duino
+* mighty-1284p: https://github.com/maniacbug/mighty-1284p
 
-Everything is here and has been initially tested.  It should work fine.  There is more detailed testing which must be completed before calling it completely 'done' though.
+The purpose of this fork is to get our EMC01 motion controller board, that is based on an ATmega1284P, to work with our Marlin fork.  Because Atmega1284P is not officially supported in Arduino, the files within this repo are needed to trick Arduino into supporting it.  While other Marlin boards have been successfully run on Sanguinololu (Atmega644P @ 16 MHz) boards, we wanted to go with the Atmega1284P at 20 MHz.  There are existing 1284p arduino shims out there, however none but Mega1284duino supported 20 MHz.  Even though the Mega1284duino supports 1284P at 20 MHz, the Arduino IO pins DO NOT line up with those in the Marlin 'fastio.h' file.  Therefore, our fork of mega1284duino is needed to get everything working together... 
 
-The platform now includes optiboot.  This bootloader is better in every way than the previous version, so it is recommended in all cases.  The prior one is included for reference.
+#### Features
 
-## Installation
+This mashup provides what I feel is the best and most up-to-date way to interface arduino, the atmega1284p, and the firepick delta emc01 motion controller board in its current state.  This includes:
 
-1. Download the [ZIP File](https://github.com/maniacbug/mighty-1284p/zipball/master)
-2. Unzip it a folder called 'hardware' off your sketches directory, e.g. /Users/maniacbug/Source/Arduino/hardware/mighty-1284p
-3. Restart the IDE
-4. Select Tools > Board > Mighty 1284p 16MHz using Optiboot
-5. To burn the bootloader, follow the Arduino [Bootloader](http://arduino.cc/en/Hacking/Bootloader) instructions.
+* Atmega1284p
+* 20 MHz
+* Optiboot bootloader (bootloaders/optiboot/optiboot_atmega1284p_slow.hex)
+* Lists fuses correctly
+* Marlin/Sprinter/Repetier fastio.h compatible (changes to variants/emc01/pins_arduino.h)
+* Latest Arduino core files (All of the existing 1284p shims out there are outdated by quite a few arduino versions)
+* Named properly so it's easy to find in the Arduino IDE among all the other entries under 'Tools->Board'
 
-## Requirements
+Hope that made sense.  Please email njansen1@gmail.com for any further questions about the fork.
 
-* Works only on Arduino >= 1.0
-* Cannot be burned using [USBtinyISP](http://www.ladyada.net/make/usbtinyisp/).  That programmer cannot flash to chips with >64k flash size.
 
-## See also
+#### Licensing
 
-http://maniacbug.wordpress.com/2011/11/27/arduino-on-atmega1284p-4/
-
-## Supported Boards
-
-* 'Mighty 1284p 16MHz using Optiboot'.  The main board.  Use this unless you have some clear reason to use another board.  This uses a straightforward pinout that is especially helpful on a breadboard-built unit.
-* 'avr-developers.com pinouts 16MHz using Optiboot'.  Some people prefer the pinouts from avr-developers.com.  The classic pinouts.
-* 'Bobuino'.  CrossRoads' board built for maximum compatibility with Arduino Uno-class shields.
-* 'Original Mighty 1284p 16MHz'.  The very first bootloader I ever got working.  Not recommended for use, but here as historical record.
-* 'Original Mighty 1284p 8MHz'.  Ditto, but runs at 8MHz.
+* mega1284duino is licensed GPL v2.  
+* Optiboot is licensed GPL v2.
+* Arduino is licensed GPL v2.  Arduino uses the GNU avr-gcc toolchain, avrdude, avr-libc, and code from Processing and Wiring.
+* The changes that I've made to this repo for FirePick Delta usage are therefore GPL v2, however, other parts of the FirePick Delta project are licensed under other open-source terms.
